@@ -196,6 +196,7 @@ class CrackVerification(object):
         trace = self.__generate_slide_trace(distance)
 
         def merge(s): return ','.join([str(s['p']), str(s['t'])])
+
         new_trace = '|'.join([merge(i) for i in trace]) + '|'
         return new_trace
 
@@ -256,10 +257,10 @@ class CrackVerification(object):
         }
         json_obj = self.__request_from_server(
             url=url, data=data, method=1).json()
-        if json_obj['code'] == 1:
+        if json_obj['code'] != 1:
+            self.__session_id = json_obj['data']['sessionId']
+        else:
             print(json_obj)
-            exit(0)
-        self.__session_id = json_obj['data']['sessionId']
 
     def __get_token(self):
         url = 'https://cdata.58.com/fpToken'
@@ -297,7 +298,6 @@ class CrackVerification(object):
             "_": str(int(time.time() * 1000))
         }
         json_obj = self.__request_from_server(url=url, data=parm).json()
-        print(json_obj)
         if json_obj['message'] == "校验成功":
             source_img = "https://verifycode.58.com{}".format(
                 json_obj['data']['sourceimg'])
@@ -327,6 +327,9 @@ class CrackVerification(object):
 
         # get session id
         self.__get_session_id()
+        if self.__session_id is None:
+            print("校检已通过")
+            return True
 
         # get token
         self.__get_token()
@@ -341,9 +344,14 @@ class CrackVerification(object):
         # verify code
         source_img_success_token = self.__verify_code(distance, track)
 
-        # # check code
+        # check code
         if source_img_success_token:
             self.__check_code(source_img_success_token)
+            print("校检成功")
+            return True
+        else:
+            print("校检失败")
+            return False
 
 
 def main():
