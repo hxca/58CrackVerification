@@ -1,0 +1,1 @@
+https://callback.58.com/antibot/verifycode?serialId=b258b952f085ac8eee4e07837a86dc2c_61f4852a64894c9c914c290e9db30edc&code=22&sign=39ef095fa5175996adad8c0eb1636f1c&namespace=chuzulistphp&url=gz.58.com%2Fchuzu%2Fpn78%2F%3FPGTID%3D0d3090a7-0000-36ce-c765-5f1d3e3dd81b%26ClickID%3D2
